@@ -60,7 +60,6 @@ async def search_notes(search: SearchNotesIn):
                 continue
         filtered_notes.append(note)
     return filtered_notes
-    
 
 
 @router.get("/{note_id}", response_model=NoteOut)
@@ -77,7 +76,7 @@ async def update_note(note_id: str, note: NoteIn):
     """ Updates an existing note """
     existing_note = get_note(note_id)
     if not existing_note:
-        raise HTTPException(status_code=404, detail="Note not found")    
+        raise HTTPException(status_code=404, detail="Note not found")
     note_data = note.dict()
     note_data["id"] = note_id
     note_data["importance"] = existing_note["importance"]
