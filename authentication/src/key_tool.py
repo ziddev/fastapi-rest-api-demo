@@ -6,7 +6,7 @@ from settings import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
     JWT_SECRET_KEY,
     JWT_ALGORITHM
-)   
+)
 
 
 def hash_password(s: str):

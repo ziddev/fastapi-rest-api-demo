@@ -8,5 +8,5 @@ def fetch_data(url, params=None):
         if res.status_code != 200:
             raise HTTPException(status_code=500, detail="Erreur API externe")
         return res.json()
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="Erreur API externe")

@@ -20,4 +20,4 @@ DATA_DIRECTORY_PATH = os.getenv("DATA_DIRECTORY_PATH", "data")
 
 # Use the content of the file specified in JWT_SECRET_PATH as the secret key if the file exists
 if JWT_SECRET_PATH:
-    JWT_SECRET_KEY=Path(JWT_SECRET_PATH).read_text() if Path(JWT_SECRET_PATH).exists() else JWT_SECRET_KEY
+    JWT_SECRET_KEY = Path(JWT_SECRET_PATH).read_text() if Path(JWT_SECRET_PATH).exists() else JWT_SECRET_KEY
