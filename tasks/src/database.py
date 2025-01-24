@@ -6,7 +6,7 @@ from settings import settings
 
 
 # Directory containing tasks JSON files
-DATA_DIRECTORY = Path(settings.DATA_DIRECTORY)
+DATA_DIRECTORY = Path(settings.DATA_DIRECTORY_PATH)
 if not DATA_DIRECTORY.exists():
     DATA_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
