@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Authentication API",
+            "type": "python",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "wsgi:app",
+                "--host", "127.0.0.1",
+                "--port", "8030",
+                "--reload"
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/src",
+                "PYTHONPYCACHEPREFIX": "/dev/null"
+            },
+            "console": "integratedTerminal"
+        }
+    ]
+}
