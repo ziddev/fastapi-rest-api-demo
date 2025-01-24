@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import APIRouter, HTTPException, status
 from re import fullmatch
 from typing import List
@@ -12,7 +13,8 @@ from database import (
 )
 from models import (
     ImportanceLevel,
-    SearchTasksIn, TaskIn, TaskOut
+    SearchTasksIn, TaskIn,
+    ListTaskOut, TaskOut
 )
 
 
@@ -32,7 +34,8 @@ async def create_task(task: TaskIn,
     task_data["id"] = task_id
     task_data["importance"] = importance.value
     task_data["revision_id"] = 1
-    save_task(task_id, task_data, False)
+    task_data["created_at"] = datetime.now()
+    save_task(task_id, task_data)
     return task_data
 
 
@@ -42,27 +45,43 @@ async def read_all_tasks():
     return get_all_tasks()
 
 
-@router.post("/_search", response_model=List[TaskOut])
-async def search_tasks(search: SearchTasksIn):
+@router.post("/_search", response_model=ListTaskOut)
+async def search_tasks(search: SearchTasksIn, selected: int = 10):
     """ Retrieves specific tasks """
     search_data = search.dict()
     tasks = get_all_tasks()
     filtered_tasks = []
+    count = 0
+
     for task in tasks:
-        if "title" in search_data:
-            if not fullmatch(search_data["title"], task["title"]):
-                continue
-        if "content" in search_data:
-            if not fullmatch(search_data["content"], task["content"]):
-                continue
-        if "completed" in search_data:
-            if search_data["completed"] != task["completed"]:
-                continue
-        if "importance"in search_data:
-            if task["importance"] not in search_data["importance"]:
-                continue
-        filtered_tasks.append(task)
-    return filtered_tasks
+        if search_data["title"] and not fullmatch(search_data["title"], task["title"]):
+            continue
+        if search_data["content"] and not fullmatch(search_data["content"], task["content"]):
+            continue
+        if "completed" in search_data and search_data["completed"] != task["completed"]:
+            continue
+        if "importance" in search_data and task["importance"] not in search_data["importance"]:
+            continue
+
+        filtered_tasks.append(TaskOut(
+            id=task["id"],
+            revision_id=task["revision_id"],
+            title=task["title"],
+            content=task["content"],
+            completed=task["completed"],
+            progress=task["progress"],
+            deadline=task.get("deadline"),
+            importance=task["importance"],
+            created_at=task["created_at"],
+            updated_at=task.get("updated_at")
+        ))
+        count += 1
+        if count >= selected:
+            break
+
+    return {"metadata": {"selected": count,
+                         "total": len(tasks)},
+            "data": filtered_tasks}
 
 
 @router.get("/{task_id}", response_model=TaskOut)
@@ -84,8 +103,9 @@ async def update_task(task_id: str, task: TaskIn):
     task_data["id"] = task_id
     task_data["importance"] = existing_task["importance"]
     task_data["created_at"] = existing_task["created_at"]
+    task_data["updated_at"] = datetime.now()
     task_data["revision_id"] = existing_task["revision_id"] + 1
-    save_task(task_id, task_data, True)
+    save_task(task_id, task_data)
     return task_data
 
 

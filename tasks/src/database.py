@@ -1,4 +1,4 @@
-from datetime import datetime
+from copy import copy
 import json
 from pathlib import Path
 
@@ -43,15 +43,23 @@ def get_task(task_id):
     return task_data
 
 
-def save_task(task_id, task_data, update_flag):
+def save_task(task_id, task_data):
+    task_clone = copy(task_data)
     task_file = _get_task_path(task_id)
-    if update_flag:
-        task_data["updated_at"] = str(datetime.now())
+    if "deadline" in task_clone and task_clone["deadline"]:
+        task_clone["deadline"] = str(task_clone["deadline"])
     else:
-        task_data["created_at"] = str(datetime.now())
-    task_data["deadline"] = str(task_data["deadline"])
+        task_clone.pop("deadline", None)
+    if "created_at" in task_clone and task_clone["created_at"]:
+        task_clone["created_at"] = str(task_clone["created_at"])
+    else:
+        task_clone.pop("created_at", None)
+    if "updated_at" in task_clone and task_clone["updated_at"]:
+        task_clone["updated_at"] = str(task_clone["updated_at"])
+    else:
+        task_clone.pop("updated_at", None)
     with open(task_file, "w", encoding="utf-8") as f:
-        json.dump(task_data, f, indent=4, ensure_ascii=False)
+        json.dump(task_clone, f, indent=4, ensure_ascii=False)
 
 
 def delete_task(task_id):

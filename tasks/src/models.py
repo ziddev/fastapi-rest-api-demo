@@ -34,5 +34,12 @@ class TaskOut(TaskIn):
     created_at: datetime
     updated_at: Optional[datetime] = None
 
-    class Config:
-        orm_mode = True
+
+class Metadata(BaseModel):
+    selected: int
+    total: int
+
+
+class ListTaskOut(BaseModel):
+    data: List[TaskOut]
+    metadata: Metadata
