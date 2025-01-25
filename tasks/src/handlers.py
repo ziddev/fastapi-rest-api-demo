@@ -89,7 +89,7 @@ async def read_task(task_id: str):
     """ Retrieves a specific task """
     task = get_task(task_id)
     if not task:
-        raise HTTPException(status_code=404, detail="Task not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
     return task
 
 
@@ -98,7 +98,7 @@ async def update_task(task_id: str, task: TaskIn):
     """ Updates an existing task """
     existing_task = get_task(task_id)
     if not existing_task:
-        raise HTTPException(status_code=404, detail="Task not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
     task_data = task.dict()
     task_data["id"] = task_id
     task_data["importance"] = existing_task["importance"]
@@ -115,7 +115,7 @@ async def delete_task_by_id(task_id: str):
     """ Deletes a specific task """
     if delete_task(task_id):
         return
-    raise HTTPException(status_code=404, detail="Task not found")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
 
 
 @router.delete("",

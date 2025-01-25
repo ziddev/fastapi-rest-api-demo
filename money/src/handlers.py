@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 
 from http_tool import fetch_data
 from models import CurrencyConversionRequest
@@ -21,7 +21,7 @@ def list_currencies():
 def get_exchange_rate(currency: str):
     rates = fetch_data(EXCHANGE_API_URL).get("rates", {})
     if currency.upper() not in rates:
-        raise HTTPException(status_code=404, detail="Devise non trouvée")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Devise non trouvée")
     return {"currency": currency.upper(), "exchange_rate": rates[currency.upper()]}
 
 
@@ -29,7 +29,7 @@ def get_exchange_rate(currency: str):
 def convert_currency(req: CurrencyConversionRequest):
     rates = fetch_data(EXCHANGE_API_URL).get("rates", {})
     if req.from_currency.upper() not in rates or req.to_currency.upper() not in rates:
-        raise HTTPException(status_code=404, detail="Devise non trouvée")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Devise non trouvée")
     return {
         "from_currency": req.from_currency.upper(),
         "to_currency": req.to_currency.upper(),
@@ -48,5 +48,5 @@ def list_cryptos():
 def get_crypto_price(crypto: str):
     data = fetch_data(CRYPTO_API_URL, {"ids": crypto.lower(), "vs_currencies": "usd"})
     if crypto.lower() not in data:
-        raise HTTPException(status_code=404, detail="Cryptomonnaie non trouvée")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cryptomonnaie non trouvée")
     return {"crypto": crypto.upper(), "price_usd": data[crypto.lower()]["usd"]}

@@ -1,0 +1,54 @@
+# 🛑 Ignorer l'environnement virtuel
+venv/
+.venv/
+
+# 🛑 Ignorer les fichiers compilés Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 🛑 Ignorer les fichiers de logs
+*.log
+logs/
+debug.log
+
+# 🛑 Ignorer les fichiers d'environnement et de configuration
+.env
+*.env
+
+# 🛑 Ignorer les fichiers de cache et temporaires
+*.swp
+*.swo
+*.bak
+*.tmp
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# 🛑 Ignorer les fichiers spécifiques à VS Code
+.vscode/
+*.code-workspace
+
+# 🛑 Ignorer les dépendances installées
+pip-log.txt
+pip-delete-this-directory.txt
+
+# 🛑 Ignorer les fichiers générés par l'IDE PyCharm
+.idea/
+*.iml
+
+# 🛑 Ignorer les fichiers de coverage (tests)
+htmlcov/
+.coverage
+*.cover
+.cache
+nosetests.xml
+coverage.xml
+
+# 🛑 Ignorer les fichiers créés par mypy et pytest
+.mypy_cache/
+.pytest_cache/
+
+# 🛑 Ignorer les fichiers build et distribution
+build/
+dist/
+*.egg-info/
