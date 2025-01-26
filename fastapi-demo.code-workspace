@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "tasks"
+		},
+		{
+			"path": "money"
+		},
+		{
+			"path": "authentication"
+		}
+	],
+	"settings": {
+		"terminal.integrated.env.linux": {
+			"VIRTUAL_ENV": "${workspaceFolder}/venv",
+			"PATH": "${workspaceFolder}/venv/bin:${env:PATH}"
+		},
+		"terminal.integrated.env.windows": {
+			"VIRTUAL_ENV": "${workspaceFolder}\\venv",
+			"PATH": "${workspaceFolder}\\venv\\Scripts;${env:PATH}"
+		}
+	}
+}
